@@ -1,6 +1,6 @@
 {
   "name": "gmail-done-label-source",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Offline contract tests for the standalone Gmail label extension",
   "scripts": { "test": "node tests/run.cjs" },
