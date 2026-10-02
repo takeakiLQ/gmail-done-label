@@ -24,7 +24,7 @@ document.getElementById('native').onclick = () => {
   setTimeout(() => { picker.style.display = 'block'; }, window.mode.delay || 0);
 };
 done.onclick = () => {
-  done.setAttribute('aria-checked', window.mode.unknown ? 'unknown' : 'true');
+  done.setAttribute('aria-checked', window.mode.unknown ? 'unknown' : done.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
   if (window.mode.changeOther) other.setAttribute('aria-checked', 'false');
   if (window.mode.navigate) location.hash = '#inbox/another';
 };
