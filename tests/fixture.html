@@ -1,0 +1,45 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><title>Gmail UI contract fixture (not real Gmail)</title>
+<style>body{font:14px Arial;padding:24px} [role=toolbar]{padding:12px;background:#eee} [role=menu]{border:1px solid #ccc;padding:12px;width:230px} [role=menuitemcheckbox], [role=menuitem]{padding:8px;cursor:pointer}</style>
+<main role="main">
+  <div role="toolbar"><button id="native" aria-label="ラベルを付ける">ラベル</button></div>
+  <h2 class="hP">Synthetic thread</h2>
+  <table><tr role="row" id="mail-row" style="display:none"><td><span role="checkbox" aria-checked="true">Selected fixture</span></td></tr></table>
+</main>
+<div role="menu" id="picker" style="display:none">
+  <input type="text" aria-label="ラベル検索">
+  <div role="menuitemcheckbox" title="✅処理済" aria-checked="false">✅処理済</div>
+  <div role="menuitemcheckbox" title="既存ラベル" aria-checked="true">既存ラベル</div>
+  <div role="menuitem" id="apply">適用</div>
+</div>
+<script>
+window.applied = 0;
+window.commits = [];
+window.mode = {};
+const picker = document.getElementById('picker');
+const done = picker.querySelector('[title="✅処理済"]');
+const other = picker.querySelector('[title="既存ラベル"]');
+let states;
+document.getElementById('native').onclick = () => {
+  states = [done.getAttribute('aria-checked'), other.getAttribute('aria-checked')];
+  setTimeout(() => { picker.style.display = 'block'; }, window.mode.delay || 0);
+};
+done.onclick = () => {
+  done.setAttribute('aria-checked', window.mode.unknown ? 'unknown' : 'true');
+  if (window.mode.changeOther) other.setAttribute('aria-checked', 'false');
+  if (window.mode.navigate) location.hash = '#inbox/another';
+};
+document.getElementById('apply').onclick = () => {
+  window.applied++;
+  window.commits.push([done.getAttribute('aria-checked'), other.getAttribute('aria-checked')]);
+  picker.style.display = 'none';
+};
+picker.onkeydown = event => {
+  if (event.key === 'Escape') {
+    picker.style.display = 'none';
+    if (states) {
+      done.setAttribute('aria-checked', states[0]);
+      other.setAttribute('aria-checked', states[1]);
+    }
+  }
+};
+</script></html>
